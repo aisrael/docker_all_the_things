@@ -1,0 +1,13 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    net_http_unix (0.2.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  net_http_unix
+
+BUNDLED WITH
+   1.16.1
