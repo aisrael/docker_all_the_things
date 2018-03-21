@@ -97,12 +97,16 @@ end
 
 ReportedStats = Struct.new :cpu_percent, :memory_usage, :memory_max_usage
 
-def benchmark(name, port)
-  container_name = "#{name}-#{NONCE}"
-  docker_run_cmd = "docker run --rm --name #{container_name} -p 8000:#{port} -d #{name}"
+def benchmark(image_name, port)
+  container_name = "#{image_name}-#{NONCE}"
+  docker_run_cmd = "docker run --rm --name #{container_name} -p 8000:#{port} -d #{image_name}"
   puts docker_run_cmd
   exit 1 unless system(docker_run_cmd)
-  # Gather baseline stats before load
+  # Give some time for the container to boot, then pre-warm with 1000 requests
+  sleep(1)
+  ab_command = %(#{AB} -n 1000 "#{URL}")
+  system(ab_command)
+  # Gather baseline stats before actual load
   stats_before_load = docker_stats(container_name)
   stats_with_load = run_ab_and_wait(container_name)
   stats_with_load.unshift(stats_before_load).each_cons(2).map do |s0, s1|
