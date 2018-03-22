@@ -1,7 +1,7 @@
 FROM ysbaddaden/crystal-alpine:0.24.2 as compiler
 WORKDIR /usr/src/app
 COPY hello.cr /usr/src/app/
-RUN crystal build --release --static hello.cr
+RUN crystal build --release hello.cr
 
 FROM alpine:3.7
 RUN apk add --update pcre gc libevent libgcc
