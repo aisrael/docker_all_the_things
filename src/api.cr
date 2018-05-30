@@ -8,8 +8,13 @@ end
 require "kemal"
 
 get "/hello" do |env|
-  who = env.params.query["who"] || "world"
-  "Hello, #{who}!"
+  env.response.content_type = "application/json"
+  who = env.params.query["who"]? || "world"
+  {
+    data: {
+      greeting: "Hello, #{who}!"
+    }
+  }.to_json
 end
 
 Kemal.run
