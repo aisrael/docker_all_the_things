@@ -1,7 +1,7 @@
 FROM ysbaddaden/crystal-alpine:0.24.2 as builder
 RUN mkdir /src
 WORKDIR /src
-RUN apk add openssl-dev
+RUN apk update && apk add openssl-dev
 COPY . /src/
 RUN shards && crystal build --release src/api.cr
 
