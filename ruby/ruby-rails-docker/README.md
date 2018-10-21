@@ -5,20 +5,24 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+* Ruby version: 2.5.3
 
-* System dependencies
+#### Building the docker image
 
-* Configuration
+```
+docker build -t ruby-rails-docker .
+```
 
-* Database creation
+#### Running using Docker
 
-* Database initialization
+##### First, run PostgreSQL
 
-* How to run the test suite
+```
+docker run --name postgres -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=app_production -e POSTGRES_USER=app postgres:9.6
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+##### Then, run the app
 
-* Deployment instructions
-
-* ...
+```
+docker run --link postgres -p 3000:3000 -e APP_DATABASE_PASSWORD=secret ruby-rails-docker
+```
