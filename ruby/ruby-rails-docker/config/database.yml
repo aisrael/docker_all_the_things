@@ -80,6 +80,7 @@ test:
 #
 production:
   <<: *default
+  host: postgres
   database: app_production
   username: app
   password: <%= ENV['APP_DATABASE_PASSWORD'] %>
