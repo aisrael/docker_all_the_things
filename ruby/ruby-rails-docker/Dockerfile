@@ -71,3 +71,4 @@ COPY Gemfile Gemfile.lock /usr/src/app/
 RUN bundle config --global frozen 1
 RUN bundle install --without test
 COPY . /usr/src/app/
+RUN rails assets:precompile
