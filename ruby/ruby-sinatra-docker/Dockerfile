@@ -1,4 +1,4 @@
-FROM ruby:2.5.0-alpine
+FROM ruby:2.5.3-alpine
 EXPOSE 4567
 RUN mkdir -p /usr/src/app/app
 WORKDIR /usr/src/app
