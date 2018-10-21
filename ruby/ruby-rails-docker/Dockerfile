@@ -65,9 +65,9 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 EXPOSE 3000
 ENV RAILS_ENV production
-ENV RACK_ENV production
 ENTRYPOINT ["rails"]
 CMD ["server", "-b", "0.0.0.0"]
-COPY . /usr/src/app/
+COPY Gemfile Gemfile.lock /usr/src/app/
 RUN bundle config --global frozen 1
 RUN bundle install --without test
+COPY . /usr/src/app/
