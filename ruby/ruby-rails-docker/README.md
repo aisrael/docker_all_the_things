@@ -15,14 +15,6 @@ docker build -t ruby-rails-docker .
 
 #### Running using Docker
 
-##### First, run PostgreSQL
-
 ```
-docker run --name postgres -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=app_production -e POSTGRES_USER=app postgres:9.6
-```
-
-##### Then, run the app
-
-```
-docker run --link postgres -p 3000:3000 -e APP_DATABASE_PASSWORD=secret ruby-rails-docker
+docker run -p 3000:3000 ruby-rails-docker
 ```
