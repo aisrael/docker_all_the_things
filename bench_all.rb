@@ -12,6 +12,7 @@ TARGETS = {
   'ruby-sinatra-docker' => 4567,
   'ruby-rails-docker' => 3000,
   'go-api-docker' => 8080,
+  'go-revel-docker' => 9000,
   'elixir-maru-docker' => 8000,
   'crystal-kemal-docker' => 3000
 }.freeze
