@@ -10,6 +10,7 @@ require 'socket'
 TARGETS = {
   'java-jersey-docker' => 8080,
   'ruby-sinatra-docker' => 4567,
+  'ruby-rails-docker' => 3000,
   'go-api-docker' => 8080,
   'elixir-maru-docker' => 8000,
   'crystal-kemal-docker' => 3000
