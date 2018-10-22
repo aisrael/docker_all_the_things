@@ -80,13 +80,13 @@ def docker_stats(container_name)
 end
 
 def run_ab_and_wait(container_name)
+  stats = [docker_stats(container_name)]
   ab_command = %(#{AB} -n #{REQUESTS} -c #{CONCURRENCY} "#{URL}")
   puts ab_command
   pid = spawn(ab_command)
   return unless pid
   pthread = Process.detach(pid)
   # while process_is_running?(pid)
-  stats = []
   while pthread.alive?
     stats << docker_stats(container_name)
     sleep(SLEEP)
@@ -107,10 +107,7 @@ def benchmark(image_name, port)
   sleep(1)
   ab_command = %(#{AB} -n 1000 "#{URL}")
   system(ab_command)
-  # Gather baseline stats before actual load
-  stats_before_load = docker_stats(container_name)
-  stats_with_load = run_ab_and_wait(container_name)
-  stats_with_load.unshift(stats_before_load).each_cons(2).map do |s0, s1|
+  run_ab_and_wait(container_name).each_cons(2).map do |s0, s1|
     system_delta = (s1.system_cpu_usage - s0.system_cpu_usage).abs
     cpu_delta = (s1.cpu_usage - s0.cpu_usage)
     cpu_percent = system_delta > 0 ? Rational(cpu_delta, system_delta) : Rational(0, 0)
