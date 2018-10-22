@@ -32,6 +32,7 @@ CHECK_MESSAGES = {
 def assert_path(path, *checks)
   checks.each do |check|
     next if eval("File.#{check}?(path)", nil, __FILE__, __LINE__)
+
     prefix = if checks.include?(:executable)
                'Command'
              elsif checks.include?(:directory)
@@ -47,7 +48,7 @@ end
 
 NONCE = Process.pid
 SLEEP = 0.5
-REQUESTS = 10000
+REQUESTS = 10_000
 CONCURRENCY = 20
 URL = 'http://localhost:8000/hello?who=world'
 AB = which('ab')
@@ -86,6 +87,7 @@ def run_ab_and_wait(container_name)
   puts ab_command
   pid = spawn(ab_command)
   return unless pid
+
   pthread = Process.detach(pid)
   # while process_is_running?(pid)
   while pthread.alive?
@@ -127,26 +129,32 @@ def group_digits(number)
 end
 
 def humanize(bytes)
-  case
-  when bytes < 10_000
+  if bytes < 10_000
     group_digits(bytes)
-  when bytes < 1_000_000
+  elsif bytes < 1_000_000
     decimal = 100 * (bytes % 1024) / 1024
     "#{group_digits(bytes / 1024)}.#{decimal} KB"
-  when bytes < 1_000_000_000
-    decimal = 100 * (bytes % 1048576) / 1048576
-    "#{group_digits(bytes / 1048576)}.#{decimal} MB"
+  elsif bytes < 1_000_000_000
+    decimal = 100 * (bytes % 1_048_576) / 1_048_576
+    "#{group_digits(bytes / 1_048_576)}.#{decimal} MB"
   else
-    decimal = 100 * (bytes % 1073741824) / 1073741824
-    "#{group_digits(bytes / 1073741824)}.#{decimal} GB"
+    decimal = 100 * (bytes % 1_073_741_824) / 1_073_741_824
+    "#{group_digits(bytes / 1_073_741_824)}.#{decimal} GB"
   end
 end
 
 report = [%w[CONTAINER IMAGE_SIZE CPU AVERAGE_RAM MAX_RAM SAMPLES]]
-TARGETS.each do |name, port|
+targets = if ARGV.empty?
+            TARGETS
+          else
+            TARGETS.select do |t|
+              ARGV.any? { |a| t.start_with?(a) }
+            end
+          end
+targets.each do |name, port|
   stats = benchmark(name, port)
   image_size = docker_image_info(name).size
-  average_cpu = '%0.2f%%' % (100 * stats.map(&:cpu_percent).average).to_f
+  average_cpu = format('%0.2f%%', (100 * stats.map(&:cpu_percent).average).to_f)
   average_ram = humanize(stats.map(&:memory_usage).average)
   max_ram = humanize(stats.map(&:memory_max_usage).max)
   samples = stats.count - 1
@@ -162,16 +170,16 @@ end
 
 def pretty_print(report)
   max_column_lengths = report.transpose.map do |values|
-    values.map {|v| v.to_s.length}.max
+    values.map { |v| v.to_s.length }.max
   end
   mapped = report.map do |row|
     zipped = max_column_lengths.zip(row)
     width, first = zipped.shift
     a = [first]
     a << ' ' * (width + 2 - first.to_s.length)
-    zipped.each do |width, v|
+    zipped.each do |w, v|
       s = v.to_s
-      a << ' ' * (width + 2 - s.length)
+      a << ' ' * (w + 2 - s.length)
       a << s
     end
     a

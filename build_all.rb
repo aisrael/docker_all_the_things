@@ -13,6 +13,7 @@ TOP.each do |top|
   Dir.children(top).each do |child|
     path = File.join(PWD, top, child)
     next unless File.directory?(path)
+
     if File.file?(File.join(path, 'Dockerfile'))
       Dir.chdir(path) do
         puts "cd #{path}"
