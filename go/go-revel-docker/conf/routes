@@ -6,7 +6,7 @@
 module:testrunner
 # module:jobs
 
-
+GET     /hello                                  Hello.Index
 GET     /                                       App.Index
 
 # Ignore favicon requests
