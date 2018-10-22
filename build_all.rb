@@ -8,7 +8,7 @@ def sys(cmd)
   system(cmd)
 end
 
-TOP = ARGV || %w[crystal elixir go java ruby]
+TOP = ARGV.empty? ? %w[crystal elixir go java ruby] : ARGV
 TOP.each do |top|
   Dir.children(top).each do |child|
     path = File.join(PWD, top, child)
