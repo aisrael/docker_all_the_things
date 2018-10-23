@@ -5,7 +5,7 @@ defmodule Api.MixProject do
     [
       app: :api,
       version: "0.1.0",
-      elixir: "~> 1.6.0",
+      elixir: "~> 1.7.3",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -22,7 +22,7 @@ defmodule Api.MixProject do
   defp deps do
     [
       {:maru, "~> 0.12"},
-      {:distillery, "~> 1.5", runtime: false}
+      {:distillery, "~> 2.0", runtime: false}
     ]
   end
 end
