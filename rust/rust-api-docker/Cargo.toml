@@ -1,0 +1,10 @@
+[package]
+name = "rust-api-docker"
+version = "0.1.0"
+authors = ["Francis Murillo <francis@invento.io>"]
+
+[dependencies]
+iron = "0.6.*"
+params = "0.8.*"
+router = "0.6.*"
+rustc-serialize = "0.3"
