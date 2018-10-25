@@ -1,0 +1,10 @@
+[package]
+name = "rust-hello-docker"
+version = "0.1.0"
+authors = ["Francis Murillo <francis@invento.io>"]
+
+[dependencies]
+
+[[bin]]
+name = "hello"
+path = "main.rs"
