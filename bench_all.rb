@@ -14,7 +14,8 @@ TARGETS = {
   'go-api-docker' => 8080,
   'go-revel-docker' => 9000,
   'elixir-maru-docker' => 8000,
-  'crystal-kemal-docker' => 3000
+  'crystal-kemal-docker' => 3000,
+  'rust-api-docker' => 8080
 }.freeze
 
 def which(cmd)

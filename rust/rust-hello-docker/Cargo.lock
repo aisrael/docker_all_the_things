@@ -1,0 +1,4 @@
+[[package]]
+name = "rust-hello-docker"
+version = "0.1.0"
+
